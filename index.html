@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kitsune9914</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link class="image_ecb6c8.png" rel="icon" type="image/png" sizes="32x32" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.svg" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root{
+      /* Cores baseadas no Kuuga: ouro/âmbar, grafite profundo e textos claros */
+      --bg:#0f1724; --card:#0b1220; --accent:#f59e0b; --muted:#94a3b8; --text:#e6eef8;
+      --maxw:900px; --radius:12px; font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    
+    /* Fundo com o wallpaper direto do Kuuga + máscara de escurecimento sutil */
+    body {
+      background: linear-gradient(180deg, rgba(20, 10, 15, 0.82) 0%, rgba(10, 10, 12, 0.92) 100%), 
+                  url('kuuga.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      flex-direction: column; /* Alterado para empilhar o wrap e os selos verticalmente */
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      min-height: calc(100vh - 80px);
+    }
+
+    .wrap{width:100%;max-width:var(--maxw);}
+    
+    /* Quadrado de informações integrado com a paleta do wallpaper (Efeito Vidro Fosco) */
+    .card {
+      background: linear-gradient(135deg, rgba(20, 14, 16, 0.82) 0%, rgba(10, 10, 12, 0.9) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(245, 158, 11, 0.2); /* Reflexo dourado sutil na borda */
+      border-radius: var(--radius);
+      padding: 24px;
+      display: grid;
+      grid-template-columns:160px 1fr;
+      gap: 24px;
+      align-items: start;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), 0 0 50px rgba(20, 10, 12, 0.3);
+    }
+
+    /* Coluna da esquerda estruturada para alinhar a foto e as novas infos */
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+    }
+
+    .avatar{width:160px;height:160px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(135deg,#140e10,#0a0a0c);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
+    .avatar img{width:100%;height:100%;object-fit:cover;}
+    
+    /* Caixinha de informações centralizada abaixo da foto */
+    .profile-info-box {
+      width: 100%;
+      max-width: 160px;
+      background: rgba(20, 14, 16, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: center;
+    }
+    .profile-info-item {
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .profile-info-item i {
+      color: var(--accent);
+      font-size: 12px;
+      width: 14px;
+    }
+    .profile-info-item span {
+      color: var(--muted);
+    }
+
+    .name{font-size:24px;font-weight:700;margin:0 0 4px 0}
+    .role{font-size:13px;color:var(--accent);font-weight:500;margin:0 0 16px 0;letter-spacing: 0.5px;}
+    .bio{color:var(--text);margin:0 0 16px 0;line-height:1.6;font-size:15px}
+    
+    .skills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    .skill{
+      background: rgba(40, 20, 25, 0.4);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--text);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+    }
+    
+    .links{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 14px;
+      border-radius:8px;
+      background: rgba(20, 14, 16, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    .btn i, .btn svg {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      fill: var(--muted);
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .btn:hover{
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--accent);
+    }
+    /* Cores de destaque nos ícones originais ao passar o mouse */
+    .btn:hover i.fa-steam { color: #1b2838; }
+    .btn:hover i.fa-xbox { color: #107c10; }
+    .btn:hover i.fa-discord { color: #5865f2; }
+    .btn:hover i.fa-tv, .btn:hover i.fa-film, .btn:hover i.fa-book-open { color: #2e51a2; }
+    .btn:hover i.fa-gamepad { color: #9c27b0; }
+    
+    /* Efeito hover para o SVG da Epic Games */
+    .btn:hover svg.epic-icon { fill: #ffffff; }
+    
+    .exophase-wrap{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)}
+    .list-plain{list-style:none;padding:0;margin:6px 0 0 0;color:var(--text)}
+    .list-plain li{padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.04);font-size:15px;line-height:1.5}
+    .list-plain li strong{color:var(--accent);font-weight:600;margin-right:4px}
+    .right-col{grid-column:2/3}
+    
+    .tabs{display:flex;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);padding-bottom:12px;margin-bottom:16px}
+    .tab{padding:8px 14px;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;border:1px solid transparent;font-size:14px;transition:all 0.2s}
+    .tab:hover{color:var(--text)}
+    .tab.active{background:linear-gradient(90deg,var(--accent),#fbbf24);color:#042024;border-color:rgba(0,0,0,0.05);font-weight:500}
+    
+    .panel{display:none}
+    .panel.active{display:block}
+    
+    /* Nova classe padronizada para títulos com a barra vertical amarela */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+      line-height: 1.2;
+    }
+    
+    /* Ajuste para as subseções menores de contato */
+    .contact-section {
+      margin-bottom: 20px;
+    }
+    .contact-section .section-title {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    /* Grid de capas fixado em 4 colunas no Desktop */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 10px 0 18px 0;
+    }
+    
+    /* Remove a estilização padrão do link para manter a estética idêntica */
+    .grid-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .game-card {
+      background: rgba(20, 14, 16, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      transition: all 0.2s ease;
+      height: 100%; /* Garante altura consistente */
+      box-sizing: border-box;
+    }
+    .grid-link:hover .game-card {
+      border-color: var(--accent);
+      background: rgba(245, 158, 11, 0.05);
+      transform: translateY(-2px);
+    }
+    .game-cover {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease;
+    }
+    .grid-link:hover .game-cover {
+      transform: scale(1.02);
+    }
+    .game-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      line-height: 1.3;
+      word-wrap: break-word;
+    }
+
+    /* Estilo para a linha divisória e seção de criadores */
+    .section-divider {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.3), transparent);
+      margin: 24px 0 16px 0;
+    }
+    .channel-box {
+      background: rgba(245, 158, 11, 0.03);
+      border: 1px solid rgba(245, 158, 11, 0.1);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    /* Estilo para a área de selos clássicos 88x31 no rodapé */
+    .webbuttons-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      padding-bottom: 10px;
+    }
+    .webbuttons-footer img {
+      width: 88px;
+      height: 31px;
+      image-rendering: pixelated; /* Preserva o visual nítido pixel-art */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+    .webbuttons-footer img:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+    }
+
+    /* ==========================================================================
+       ALINHAMENTO CENTRALIZADO EXCLUSIVO PARA CELULAR / MOBILE
+       ========================================================================== */
+    @media (max-width:720px){
+      body{padding:20px;}
+      .card{grid-template-columns:1fr;align-items:stretch;padding:18px;gap:18px}
+      
+      /* Centraliza a foto e a caixinha de idade/pronomes */
+      .left-col{position:static; width:100%; max-width:100%; align-items: center;}
+      .avatar{width:120px;height:120px;margin:0 auto}
+      .profile-info-box{max-width:140px; margin:0 auto;}
+      
+      /* Alinha o conteúdo principal da coluna direita ao centro */
+      .right-col{grid-column:1/2; text-align: center;}
+      
+      /* Centraliza os botões das abas para não amontoarem no canto */
+      .tabs{flex-wrap:wrap; gap:6px; justify-content: center;}
+      .tab{padding:6px 10px;font-size:13px}
+      
+      /* Centraliza as competências/skills e os blocos de botões de links */
+      .skills, .links { justify-content: center; }
+      
+      /* Força títulos principais, subtítulos e parágrafos para o centro */
+      .name, .role, .bio, .exophase-wrap { text-align: center; }
+      .exophase-wrap img { margin: 0 auto; }
+      
+      /* Move a barrinha amarela lateral para baixo dos títulos de seção de forma simétrica */
+      .section-title {
+        text-align: center !important;
+        border-left: none !important;
+        border-bottom: 2px solid var(--accent) !important;
+        padding-left: 0 !important;
+        padding-bottom: 4px !important;
+        display: inline-block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      
+      .games-grid { grid-template-columns: repeat(2, 1fr); } /* Garante 2 colunas bem distribuídas no mobile */
+      .webbuttons-footer { margin-top: 20px; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      
+      <div class="left-col">
+        <div class="avatar">
+          <img src="https://cdn.nerdist.com/wp-content/uploads/2020/07/13030445/Kamen-Rider-Kuuga-thumbs.jpg" alt="Kitsune9914">
+        </div>
+        
+        <div class="profile-info-box">
+          <div class="profile-info-item">
+            <i class="fa-solid fa-cake-candles"></i>
+            <span>Idade:</span> <strong>19 anos</strong>
+          </div>
+          <div class="profile-info-item">
+            <i class="fa-solid fa-user-tag"></i>
+            <span>Pronomes:</span> <strong>ele/dele</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="tabs" role="tablist" aria-label="Navegação interna">
+          <button class="tab active" data-tab="perfil">Perfil</button>
+          <button class="tab" data-tab="assistir">O que assisto</button>
+          <button class="tab" data-tab="mangas">Leitura</button>
+          <button class="tab" data-tab="jogos">Jogos</button>
+          <button class="tab" data-tab="contato">Perfis</button>
+        </div>
+
+        <section id="perfil" class="panel active" role="tabpanel">
+          <h1 class="name">Kitsune9914</h1>
+          <div class="role">Tech Enthusiast • Gamer • Achievement Hunter</div>
+          <p class="bio">
+            Fascinado por ficção científica e robótica, acompanho produções clássicas, histórias de heróis japoneses e quadrinhos asiáticos do gênero. No mundo dos games, divido meu tempo entre jogos de tiro e simuladores de corrida focados em performance automotiva, sempre com o objetivo de platinar os desafios como um caçador de conquistas ativo. Além disso, sou apaixonado pela parte técnica, dedicando-me à modificação de sistemas e à preservação de hardware de consoles antigos.
+          </p>
+
+          <div class="skills" aria-hidden="false">
+            <div class="skill">🎮 Gaming</div>
+            <div class="skill">⚙️ Modding & Hardware</div>
+            <div class="skill">🎮 Retro Gaming</div>
+            <div class="skill">🏆 Achievement Hunting</div>
+          </div>
+
+          <div class="exophase-wrap">
+            <strong style="color:var(--text);font-size:14px;">Exophase Gamercard</strong>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:10px;">Acompanhe minhas últimas conquistas e estatísticas de jogo diretamente pelo perfil.</div>
+            <div>
+              <a href="https://www.exophase.com/user/Kitsune9914/" target="_blank" rel="noopener noreferrer" style="display:inline-block;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.03)">
+                <img src="https://card.exophase.com/2/0/314936.png?1780444874" alt="Exophase Gamercard — Kitsune9914" style="display:block;border:0;max-width:100%;height:auto">
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="assistir" class="panel" role="tabpanel" aria-hidden="true">
+          <h2 class="section-title">Coisas que eu gosto de assistir</h2>
+          <p style="color:var(--muted);margin:0 0 20px 0;font-size:14px;">Sou muito focado em produções clássicas e ficção científica. Curto demais histórias com robôs giants, mechas, tramas que exploram tecnologia avançada e o universo de heróis japoneses (tokusatsu), curtindo desde coisas mais nostálgicas até narrativas de ficção mais densas e cheias de ação. No YouTube, meu feed é dominado por canais que falam sobre o mundo dos jogos e tecnologia de código aberto.</p>
+          
+          <div style="color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:10px;">Animes Favoritos:</div>
+          <div class="games-grid">
+            <a href="https://myanimelist.net/anime/2200/Muteki_Choujin_Zambot_3?q=Zambot%203&cat=anime" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/anime/1950/109827.jpg" alt="Zambot 3 Poster">
+                <span class="game-title">Zambot 3</span>
+              </div>
+            </a>
+            <a href="https://myanimelist.net/anime/2337/Tetsujin_28-gou_2004?q=Tetsujin&cat=anime" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/anime/13/53585.jpg" alt="Gundam Hathaway Poster">
+                <span class="game-title">Tetsujin 28-gou (2004)</span>
+              </div>
+            </a>
+            <a href="https://myanimelist.net/anime/35737/Pluto?q=Pluto&cat=anime" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/anime/1983/133375.jpg" alt="Pluto Poster">
+                <span class="game-title">Pluto</span>
+              </div>
+            </a>
+            <a href="https://myanimelist.net/anime/1675/Chou_Robot_Seimeitai_Transformers_Micron_Densetsu?q=micron&cat=anime" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/anime/1231/104729.jpg" alt="Transformers Poster">
+                <span class="game-title">Transformers Micron Densetsu</span>
+              </div>
+            </a>
+          </div>
+
+          <hr class="section-divider">
+
+          <div style="color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:10px;">Filmes favoritos:</div>
+          <div class="games-grid">
+            <a href="https://www.imdb.com/pt/title/tt1663662/" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimage.tmdb.org%2Ft%2Fp%2Foriginal%2F8wo4eN8dWKaKlxhSvBz19uvj8gA.jpg&f=1&nofb=1&ipt=939c1381ba47f4a12332a7406d2ccec77000f4c9b501827a26872daec3f5f809" alt="Círculo de Fogo Poster">
+                <span class="game-title">Círculo de Fogo</span>
+              </div>
+            </a>
+            <a href="https://mydramalist.com/4686-kamen-rider-zo" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://i.mydramalist.com/pZ8wb_4c.jpg?v=1" alt="Placeholder Filme 2">
+                <span class="game-title">Kamen Rider ZO</span>
+              </div>
+            </a>
+            <a href="https://www.imdb.com/pt/title/tt8864596/" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Transformers_One_Official_Poster.jpg/250px-Transformers_One_Official_Poster.jpg" alt="Placeholder Filme 3">
+                <span class="game-title">Transformers One/O início</span>
+              </div>
+            </a>
+            <a href="https://myanimelist.net/anime/37765/Kidou_Senshi_Gundam__Senkou_no_Hathaway?q=Hathaway&cat=anime" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/anime/1110/106664.jpg" alt="Placeholder Filme 4">
+                <span class="game-title">Kidou Senshi Gundam: Senkou no Hathaway</span>
+              </div>
+            </a>
+          </div>
+          <hr class="section-divider">
+
+          <div style="color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:10px;">Séries Favoritas:</div>
+          <div class="games-grid">
+            <a href="https://mydramalist.com/3423-kamen-rider-555" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://i.mydramalist.com/ERnmm_4c.jpg?v=1" alt="Placeholder Série 1">
+                <span class="game-title">Kamen Rider 555 (Faiz)</span>
+              </div>
+            </a>
+            <a href="https://mydramalist.com/24692-kamen-rider-build" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://i.mydramalist.com/YYgzgP_4c.jpg?v=1" alt="Placeholder Série 2">
+                <span class="game-title">Kamen Rider Build</span>
+              </div>
+            </a>
+            <a href="https://mydramalist.com/695799-kamen-rider-black-sun" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://i.mydramalist.com/ZOLk7_4c.jpg?v=1" alt="Placeholder Série 3">
+                <span class="game-title">Kamen Rider Black Sun</span>
+              </div>
+            </a>
+            <a href="https://mydramalist.com/3409-kamen-rider-kuuga" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://i.mydramalist.com/WXrx3_4c.jpg?v=1" alt="Placeholder Série 4">
+                <span class="game-title">Kamen Rider Kuuga</span>
+              </div>
+            </a>
+          </div>
+
+          <hr class="section-divider">
+
+          <div class="channel-box">
+            <div style="color:var(--accent); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-clapperboard"></i> Canais e Conteúdo do YouTube:
+            </div>
+            <ul class="list-plain">
+              <li style="padding:4px 0; border:0; font-size:14px;"><strong>Canais:</strong> <em>Core</em> (jogos/comunidade) e <em>Diolinux</em> (tecnologia, open source e ecossistema Linux).</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="mangas" class="panel" role="tabpanel" aria-hidden="true">
+          <h2 class="section-title">Minhas Leituras</h2>
+          <p style="color:var(--muted);margin:0 0 20px 0;font-size:14px;">Minhas leituras são uma extensão direta dos meus jogos e telas, focadas em ficção científica, robôs gigantes, inteligência artificial e grandes combates. Curto desde os mangás clássicos que fundaram o gênero Mecha até narrativas mais maduras e psicológicas, além de devorar livros de universos expandidos para me aprofundar na rica história militar de franquias marcantes, exatamente como faço com a literatura de Halo</p>
+          
+          <div style="color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:10px;">Mangás & Quadrinhos:</div>
+          <div class="games-grid">
+            
+            <a href="https://myanimelist.net/manga/8773/Mazinger_Z" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/manga/2/43615.jpg" alt="Mazinger Z">
+                <span class="game-title">Mazinger Z</span>
+              </div>
+            </a>
+
+            <a href="https://myanimelist.net/manga/111710/Mazinger_Z__Alter_Ignition" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/manga/2/222478.jpg" alt="Mazinger Z: Alter Ignition">
+                <span class="game-title">Mazinger Z: Alter Ignition</span>
+              </div>
+            </a>
+
+            <a href="https://myanimelist.net/manga/745/Pluto" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/manga/1/264496.jpg" alt="Pluto">
+                <span class="game-title">Pluto</span>
+              </div>
+            </a>
+
+            <a href="https://myanimelist.net/manga/8558/UFO_Robo_Grendizer" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://cdn.myanimelist.net/images/manga/1/43589.jpg" alt="UFO Robo Grendizer">
+                <span class="game-title">UFO Robo Grendizer</span>
+              </div>
+            </a>
+
+          </div>
+
+          <hr class="section-divider">
+
+          <div style="color:var(--accent); font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:10px;">Livros & Universos Expandidos:</div>
+          <div class="games-grid">
+
+            <a href="#" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://halo.wiki.gallery/images/thumb/1/14/HaloBrokenCircle.jpg/400px-HaloBrokenCircle.jpg?20140621002629" alt="Halo Broken Circle">
+                <span class="game-title">Halo Broken Circle</span>
+              </div>
+            </a>
+
+            <a href="#" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://placehold.co/300x400/0b1220/e6eef8?text=Em+Breve" alt="Em Breve">
+                <span class="game-title">Em Breve</span>
+              </div>
+            </a>
+
+            <a href="#" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://placehold.co/300x400/0b1220/e6eef8?text=Em+Breve" alt="Em Breve">
+                <span class="game-title">Em Breve</span>
+              </div>
+            </a>
+
+            <a href="#" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://placehold.co/300x400/0b1220/e6eef8?text=Em+Breve" alt="Em Breve">
+                <span class="game-title">Em Breve</span>
+              </div>
+            </a>
+
+          </div>
+
+          <ul class="list-plain" style="margin-top:20px;">
+            <li><strong>Status Geral:</strong> Insira aqui notas gerais sobre suas estatísticas de leitura (ex: quantidade lida, gêneros favoritos ou metas).</li>
+          </ul>
+        </section>
+
+        <section id="jogos" class="panel" role="tabpanel" aria-hidden="true">
+          <h2 class="section-title">Espaço Gamer</h2>
+          <p style="color:var(--muted);margin:0 0 12px 0;font-size:14px;">No mundo dos games, sou fascinado pela parte técnica de modificação de sistemas e preservação de hardware de consoles antigos. Meu catálogo reflete uma forte identidade moldada por shooters militares consagrados (como a era de ouro de Call of Duty, Battlefield e Halo), simuladores de corrida focados em performance e rali (Forza Horizon, DiRT e WRC), além de clássicos marcantes do PC. Acima de tudo, sou um caçador de conquistas ativo (Achievement Hunter)</p>
+          
+          <div style="color:var(--accent); font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-top:16px;">Favoritos Absolutos:</div>
+          
+          <div class="games-grid">
+            <a href="https://www.trueachievements.com/game/Halo-Reach/achievements?gamerid=1755989" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1xha.webp" alt="Halo Reach Cover">
+                <span class="game-title">Halo Reach</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Battlefield-Hardline-Xbox-360/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1nmg.webp" alt="Battlefield Hardline Cover">
+                <span class="game-title">Battlefield Hardline</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Forza-Horizon/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co228y.webp" alt="Forza Horizon Cover">
+                <span class="game-title">Forza Horizon</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/DiRT/achievements?gamerid=1755989" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co2f4c.webp" alt="DiRT Cover">
+                <span class="game-title">DiRT</span>
+              </div>
+            </a>
+
+            <a href="https://www.trueachievements.com/game/Call-of-Duty-4/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1wko.webp" alt="Novo Jogo 1">
+                <span class="game-title">Call of Duty 4: Modern Warfare</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Modern-Warfare-2-2009/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co3cwt.webp" alt="Novo Jogo 2">
+                <span class="game-title">Call of Duty: Modern Warfare 2</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Modern-Warfare-3/achievements?gamerid=1755989" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1wkn.webp" alt="Novo Jogo 3">
+                <span class="game-title">Call of Duty: Modern Warfare 3</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Call-of-Duty-World-at-War/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1wl8.webp" alt="Novo Jogo 4">
+                <span class="game-title">Call of Duty: World at War</span>
+              </div>
+            </a>
+
+            <a href="https://store.steampowered.com/app/232770/POSTAL/" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co7yfg.webp" alt="Novo Jogo 5">
+                <span class="game-title">Postal</span>
+              </div>
+            </a>
+            <a href="https://store.steampowered.com/app/223470/POSTAL_2/" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co8fqo.webp" alt="Novo Jogo 6">
+                <span class="game-title">Postal 2</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/Left-4-Dead/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1qrm.webp" alt="Novo Jogo 7">
+                <span class="game-title">Left 4 Dead</span>
+              </div>
+            </a>
+            <a href="https://www.trueachievements.com/game/WRC-FIA-World-Rally-Championship-4/achievements" target="_blank" rel="noopener noreferrer" class="grid-link">
+              <div class="game-card">
+                <img class="game-cover" src="https://images.igdb.com/igdb/image/upload/t_cover_big/co28iy.webp" alt="Novo Jogo 8">
+                <span class="game-title">WRC 4 FIA World Rally Championship</span>
+              </div>
+            </a>
+          </div> <ul class="list-plain">
+            <li><strong>Plataformas:</strong> Ativo prioritariamente no PC, entusiasta da preservação e modificação no Xbox 360 e jogatinas casuais no celular.</li>
+            <li><strong>Estilo de jogo:</strong> Curto bastante jogos de tiro e Corrida.</li>
+            <li><strong>Meta atual:</strong> Me divertir e poder fazer os jogos que eu gosto trazer a mesma alegria que trazem pra mim</li>
+          </ul>
+        </section>
+
+        <section id="contato" class="panel" role="tabpanel" aria-hidden="true">
+          <h2>Contato & Redes</h2>
+          <p style="color:var(--muted);margin:0 0 20px 0;font-size:14px;">Fique à voltar para me adicionar ou acompanhar minhas bibliotecas digitais:</p>
+          
+          <div class="contact-section">
+            <div class="section-title">Seriados</div>
+            <div class="links">
+              <a class="btn" href="https://myanimelist.net/profile/Kitsune9915" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-tv"></i> My Anime List
+              </a>
+              <a class="btn" href="https://mydramalist.com/profile/Kitsune9915" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-film"></i> My Drama List
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-section">
+            <div class="section-title">Contas de Games</div>
+            <div class="links">
+              <a class="btn" href="https://steamcommunity.com/profiles/76561199260076003/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-steam"></i> Steam
+              </a>
+              <a class="btn" href="https://www.gog.com/u/kitsune9914" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-gamepad"></i> GOG
+              </a>
+              <a class="btn" href="https://www.xbox.com/pt-BR/play/user/OpenSuse32" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-xbox"></i> Xbox
+              </a>
+              <a class="btn" href="#" onclick="alert('Epic Games ID: Saykii_Hashirya'); return false;">
+                <svg class="epic-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0L1.412 3.125v13.56L12 24l10.588-7.315V3.125L12 0zm7.135 15.358L12 20.266l-7.135-4.908V5.372L12 3.13l7.135 2.242v9.986zM12 6.643l-4.545 1.43v5.674L12 16.14l4.545-2.393V8.073L12 6.643zm2.536 5.867l-2.536 1.336-2.536-1.336V9.828l2.536-.798 2.536.798v2.682z"/>
+                </svg>
+                Epic Games: Saykii_Hashirya
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-section" style="margin-bottom:0;">
+            <div class="section-title">Social</div>
+            <div class="links">
+              <a class="btn" href="#" onclick="alert('Discord: eduardo_1660'); return false;">
+                <i class="fa-brands fa-discord"></i> Discord: eduardo_1660
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="webbuttons-footer">
+    <img src="https://img.shields.io/badge/Linux-000000?logo=linux&logoColor=fff&style=flat" alt="Linux" style="border: none !important; outline: none !important;">
+
+    <img src="https://img.shields.io/badge/GOG.com-111111?logo=gogdotcom&logoColor=fff&style=flat" alt="GOG" style="border: none !important; outline: none !important;">
+
+    <img src="https://img.shields.io/badge/Steam-171a21?logo=steam&logoColor=fff&style=flat" alt="Steam" style="border: none !important; outline: none !important;">
+
+    <img src="https://img.shields.io/badge/Epic_Games-121212?logo=epicgames&logoColor=fff&style=flat" alt="Epic" style="border: none !important; outline: none !important;">
+
+    <img src="https://img.shields.io/badge/Nerd-121212?logo=gnubash&logoColor=fff&style=flat" alt="Nerd" style="border: none !important; outline: none !important;">
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.tab');
+      const panels = document.querySelectorAll('.panel');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Remove a classe active de todas as abas e painéis
+          tabs.forEach(t => t.classList.remove('active'));
+          panels.forEach(p => {
+            p.classList.remove('active');
+            p.setAttribute('aria-hidden', 'true');
+          });
+
+          // Adiciona a classe active na aba clicada e no painel correspondente
+          tab.classList.add('active');
+          const targetPanel = document.getElementById(tab.dataset.tab);
+          if (targetPanel) {
+            targetPanel.classList.add('active');
+            targetPanel.setAttribute('aria-hidden', 'false');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
